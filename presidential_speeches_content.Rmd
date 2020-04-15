@@ -282,6 +282,10 @@ immigration_party_regression <- lm(immigration_percent ~ party, sentiment_speech
 populism_regression
 immigration_regression
 immigration_party_regression
+
+
+plot(populism_regression$`_data`$estimate, 1:4, xlim = c(-4, 6), ylim = c(1, 4), pch = 16)
+arrows(x0 = populism_regression$`_data`$conf.low[1], x1 = populism_regression$`_data`$conf.high[1], y0 = 1, length = 0)
 ```
 
 
