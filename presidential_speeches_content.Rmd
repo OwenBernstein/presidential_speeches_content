@@ -78,7 +78,8 @@ populism <- tidy_speeches %>%
 environment <- tidy_speeches %>% 
   group_by(speaker, title, region, total_words, date) %>% 
   filter(str_detect(word, "green") | str_detect(word, "climate")
-         | str_detect(word, "environment") | word == "heating") %>% 
+         | str_detect(word, "environment") | str_detect(word, "heating")
+         | str_detect(word, "durable")) %>% 
   mutate(environment_count = sum(n)) %>% 
   arrange(desc(environment_count))
 
@@ -86,7 +87,7 @@ immigration <- tidy_speeches %>%
   group_by(speaker, title, region, total_words, date) %>% 
   filter(str_detect(word, "asylum") | str_detect(word, "halal")
          | str_detect(word, "scarf") | str_detect(word, "illegal")
-         | str_detect(word, "immigra") | str_detect(word, "ISlam") 
+         | str_detect(word, "immigra") | str_detect(word, "Islam") 
          | str_detect(word, "Koran") | str_detect(word, "Muslim")
          | str_detect(word, "foreign")) %>% 
   mutate(immigration_count = sum(n)) %>% 
@@ -94,19 +95,23 @@ immigration <- tidy_speeches %>%
 
 progressive <- tidy_speeches %>% 
   group_by(speaker, title, region, total_words, date) %>% 
-  filter(word == "progressive" | word == "right" | word == "freedom" 
-         | word == "self-disposition" | word == "handicap" | word == "poverty" 
-         | word == "protection" | word == "honest" | word == "equal" 
-         | word == "education" | word == "pension" | word == "social" 
-         | word == "weak") %>% 
+  filter(str_detect(word,"progress") | str_detect(word, "right")
+         | str_detect(word, "freedom") | str_detect(word, "self-disposition")
+         | str_detect(word, "handicap") | str_detect(word, "poverty") 
+         | str_detect(word, "protection") | str_detect(word, "honest")
+         | str_detect(word, "equal") | str_detect(word, "education")
+         | str_detect(word, "pension") | str_detect(word, "social") 
+         | str_detect(word, "weak")) %>% 
   mutate(progressive_count = sum(n)) %>% 
   arrange(desc(progressive_count))
 
 conservatism <- tidy_speeches %>% 
   group_by(speaker, title, region, total_words, date) %>% 
-  filter(word == "belief" | word == "family" | word == "church"
-         | word == "norm" | word == "porn" | word == "sex" | word == "values"
-         | word == "conservative" | word == "conservatism") %>% 
+  filter(str_detect(word, "belief") | str_detect(word, "family")
+         | str_detect(word, "church") | str_detect(word, "norm")
+         | str_detect(word, "porn") | str_detect(word, "sex")
+         | str_detect(word, "values") | str_detect(word, "conservative")
+         | str_detect(word, "conservatism") | str_detect(word, "custom")) %>% 
   mutate(conservatism_count = sum(n)) %>% 
   arrange(desc(conservatism_count))
 
@@ -154,6 +159,10 @@ populism_hist <- sentiment_speeches %>%
        y = "Number of Speeches") +
   theme_minimal()
 
+populism_hist
+
+ggsave("presidential_speeches/pop_hist_plot.png")
+
 immigration_hist <- sentiment_speeches %>% 
   ggplot(aes(immigration_percent)) +
   geom_histogram(bins = 10) +
@@ -162,6 +171,10 @@ immigration_hist <- sentiment_speeches %>%
        x = "Percent Language Relating to Immigration",
        y = "Number of Speeches") +
   theme_minimal()
+
+immigration_hist
+
+ggsave("presidential_speeches/img_hist_plot.png")
 
 environment_hist <- sentiment_speeches %>% 
   ggplot(aes(environment_percent)) +
@@ -172,6 +185,10 @@ environment_hist <- sentiment_speeches %>%
        y = "Number of Speeches") +
   theme_minimal()
 
+environment_hist
+
+ggsave("presidential_speeches/env_hist_plot.png")
+
 progressive_hist <- sentiment_speeches %>% 
   ggplot(aes(progressive_percent)) +
   geom_histogram(bins = 10) +
@@ -181,20 +198,22 @@ progressive_hist <- sentiment_speeches %>%
        y = "Number of Speeches") +
   theme_minimal()
 
+progressive_hist
+
+ggsave("presidential_speeches/pro_hist_plot.png")
+
 conservatism_hist <- sentiment_speeches %>% 
   ggplot(aes(conservatism_percent)) +
   geom_histogram(bins = 10) +
-  facet_wrap(~ speaker.x) +
+  facet_wrap(~ speaker) +
   labs(title = "Conservative Language in Speeches by Candidate",
        x = "Percent Conservative Language",
        y = "Number of Speeches") +
   theme_minimal()
 
-populism_hist
-immigration_hist
-environment_hist
-progressive_hist
 conservatism_hist
+
+ggsave("presidential_speeches/con_hist_plot.png")
 ```
 
 ```{r box plots, include = FALSE}
@@ -249,6 +268,10 @@ immigration__box
 environment_box
 progressive_box
 conservatism_box
+
+# Add str_detect for progressive and conservatism
+#Maybe add titles for the outliers
+
 ```
 
 ```{r linear regression, include = FALSE}
@@ -264,7 +287,7 @@ populism_regression <- lm(populism_percent ~ speaker, sentiment_speeches) %>%
   select(term, estimate, conf.low, conf.high) %>% 
   gt() %>% 
   tab_header(title = "Linear Regression of Candidate on Populist Language",
-             subtitle = "Using Bernie Sanders as Baseline") %>%
+             subtitle = "Using Barack Obama as Baseline") %>%
   
   cols_label(term = "Candidate", estimate = "Estimate",
              conf.low = "Lower Bound", conf.high = "Upper Bound")
