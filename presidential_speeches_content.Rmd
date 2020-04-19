@@ -231,6 +231,10 @@ populism_box <- ggplot(sentiment_speeches, aes(speaker, populism_percent)) +
   theme_minimal() +
   theme(axis.line = element_line())
 
+populism_box
+
+ggsave("presidential_speeches/pop_box_plot.png")
+
 immigration__box <- ggplot(sentiment_speeches, aes(speaker, immigration_percent)) +
   geom_boxplot() +
   labs(title = "Language Relating to Immigration in Speeches by Candidate",
@@ -238,6 +242,10 @@ immigration__box <- ggplot(sentiment_speeches, aes(speaker, immigration_percent)
        Language Relating to Immigration") +
   theme_minimal() +
   theme(axis.line = element_line())
+
+immigration__box
+
+ggsave("presidential_speeches/img_box_plot.png")
 
 environment_box <- ggplot(sentiment_speeches,
                           aes(speaker, environment_percent)) +
@@ -247,6 +255,10 @@ environment_box <- ggplot(sentiment_speeches,
   theme_minimal() +
   theme(axis.line = element_line())
 
+environment_box
+
+ggsave("presidential_speeches/env_box_plot.png")
+
 progressive_box <- ggplot(sentiment_speeches,
                           aes(speaker, progressive_percent)) +
   geom_boxplot() +
@@ -254,6 +266,10 @@ progressive_box <- ggplot(sentiment_speeches,
        x = "Candidate", y = "Percent Progressive Language") +
   theme_minimal() +
   theme(axis.line = element_line())
+
+progressive_box
+
+ggsave("presidential_speeches/pro_box_plot.png")
 
 conservatism_box <- ggplot(sentiment_speeches,
                            aes(speaker, conservatism_percent)) +
@@ -263,15 +279,9 @@ conservatism_box <- ggplot(sentiment_speeches,
   theme_minimal() +
   theme(axis.line = element_line())
 
-populism_box
-immigration__box
-environment_box
-progressive_box
-conservatism_box
+conservatism_box 
 
-# Add str_detect for progressive and conservatism
-#Maybe add titles for the outliers
-
+ggsave("presidential_speeches/con_box_plot.png")
 ```
 
 ```{r linear regression, include = FALSE}

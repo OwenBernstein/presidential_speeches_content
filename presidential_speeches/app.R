@@ -9,31 +9,6 @@ library(janitor)
 library(tidytext)
 library(tidyverse)
 
-
-
-navbarPage(
-    "Final Project Title",
-    tabPanel("Model",
-             fluidPage(
-                 titlePanel("Model Title"),
-                 mainPanel( plotOutput("preImage")))
-    ),
-    tabPanel("Discussion",
-             titlePanel("Discussion Title"),
-             p("Tour of the modeling choices you made and 
-              an explanation of why you made them")),
-    tabPanel("About", 
-             titlePanel("About"),
-             h3("Project Background and Motivations"),
-             p("Hello, this is where I talk about my project."),
-             h3("About Me"),
-             p("My name is ______ and I study ______. 
-             You can reach me at ______@college.harvard.edu.")))
-
-
-
-
-
 # Define UI for application that draws a histogram
 ui <- navbarPage(
     "Content Analysis of Presidential Speeches",
@@ -58,7 +33,19 @@ ui <- navbarPage(
                                                  "Conservatism"))
         ),
         mainPanel(
-           plotOutput("histPlot"))))),
+           plotOutput("histPlot"))),
+        sidebarLayout(
+            sidebarPanel(
+                selectInput("box",
+                            "Content Category",
+                            choices = c("Populism", 
+                                        "Immigration",
+                                        "Environment", 
+                                        "Progressivism",
+                                        "Conservatism"))
+                ),
+            mainPanel(
+                plotOutput("boxPlot"))))),
         tabPanel("Discussion",
                  titlePanel("Discussion Title"),
                  p("Tour of the modeling choices you made and 
@@ -101,6 +88,43 @@ server <- function(input, output) {
                  height = 700,
                  width = 700,
                  alt = 'plot')  
+        }
+    }, deleteFile = FALSE)
+    
+    output$boxPlot <- renderImage({
+        if(input$box == "Populism"){
+            filename <- normalizePath(file.path("pop_box_plot.png"))
+            list(src = filename,
+                 height = 700,
+                 width = 700,
+                 alt = 'plot')}
+        else if(input$box == "Immigration") {
+            filename <- normalizePath(file.path("img_box_plot.png"))
+            list(src = filename,
+                 height = 700,
+                 width = 700,
+                 alt = 'plot')  
+        }
+        else if(input$box == "Environment") {
+            filename <- normalizePath(file.path("env_box_plot.png"))
+            list(src = filename,
+                 height = 700,
+                 width = 700,
+                 alt = 'plot')  
+        }
+        else if(input$box == "Progressivism") {
+            filename <- normalizePath(file.path("pro_box_plot.png"))
+            list(src = filename,
+                 height = 700,
+                 width = 700,
+                 alt = 'plot')  
+        }
+        else if(input$box == "Conservatism") {
+            filename <- normalizePath(file.path("con_box_plot.png"))
+            list(src = filename,
+                 height = 700,
+                 width = 700,
+                 alt = 'plot')
         }
     }, deleteFile = FALSE)
 }
