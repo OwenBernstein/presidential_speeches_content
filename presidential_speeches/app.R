@@ -3,7 +3,7 @@ library(shiny)
 library(shinythemes)
 
 # Define UI for application that draws a histogram
-ui <- navbarPage(theme = shinytheme("united"),
+ui <- navbarPage(theme = shinytheme("cerulean"),
     "Content Analysis of Presidential Speeches",
     tabPanel("About", 
              column(7,

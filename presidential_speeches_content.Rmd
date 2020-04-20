@@ -224,8 +224,9 @@ sentiment_speeches[is.na(sentiment_speeches)] = 0
 
 # Creating box plots for each candidate by category
 
-populism_box <- ggplot(sentiment_speeches, aes(speaker, populism_percent)) +
-  geom_boxplot() +
+populism_box <- sentiment_speeches %>% 
+  ggplot(., aes(speaker, populism_percent)) +
+  geom_boxplot() + 
   labs(title = "Populist Language in Speeches by Candidate",
        x = "Candidate", y = "Percent Populist Language") +
   theme_minimal() +
