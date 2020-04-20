@@ -8,12 +8,47 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
     tabPanel("About", 
              column(7,
              h1("Background"),
-             p("Project Background and Motivations"),
+             p("In recent years, populism, and all of its associated meanings,
+             have gained a prominent position in public discourse. In 2017, due
+             to the installment of populist leaders around the world and
+             increased discussion in international politics, the Cambridge
+             Dictionary even declared populism the Word of the Year. Growing
+             international concern has been mirrored in the United States as
+             activists, media organizations, and politicians have begun to label
+             each other, and entire institutions, as dangerous expressions of
+             populism."),
+             p("Inspired by this development, this project began as an attempt
+             to identify and quantify populism in American political discourse.
+             Using research methods outlined by Michael Laver and John Garry and
+             later applied by Teun Pauwels, Roel Popping, and Pablo Ribera Payá,
+             I decided to use the speeches of presidential candidates as sample
+             for measuring populism. As I read this associated literature, I
+             also decided to expand my project’s focus to include other content
+             categories such as immigration, environmentalism, progressivism,
+             and conservatism."),
+             p("Ultimately, the goal of this project is to identify trends in
+             American political discourse relating to my selected content
+             categories. I hope to answer questions such as how the use of
+             populist language has changed over time, which presidential
+             candidates have talked about immigration the most, or which
+             political party talks about the environment more frequently."),
              h1("About the Data"),
-             p("What the data is"),
+             p("The data for this project are the assembled campaign speeches of
+               presidential candidates from the 2004 election to the 2016
+               election. The transcripts of these speeches are publicly
+               available. One resource which was incredibly helpful in
+               collecting this speeches was the University of California, Santa
+               Barbara’s American Presidency Project. This project was started
+               in 1999 to develop resources for a university course and has
+               since grown into a fairly comprehensive collection of
+               presidential public documents. I also gathered speeches from Data
+               Society on the website data.world. More details about the data
+               can be found in the methods tab. "),
              h1("About Me"),
-             p("My name is ______ and I study ______. 
-             You can reach me at ______@college.harvard.edu."))),
+             p("My name is Owen Bernstein and I am currently an undergraduate at
+             Harvard studying government with a specialization in data science. 
+             You can reach me at owenbernstein@college.harvard.edu.")),
+             tags$style(HTML("body, pre { font-size: 16pt; }"))),
     tabPanel("Model",
              column(3,
                     h3("Histogram Analysis"),
@@ -61,7 +96,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              p("Discussion of literature and why it does not match perfectly"),
              h1("Data"),
              p("Where I got the data from")))
-    
+
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
