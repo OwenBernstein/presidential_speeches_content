@@ -10,13 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Loading necessary packages
 
-library(ggrepel)
 library(gt)
-library(infer)
 library(skimr)
 library(lubridate)
 library(janitor)
+library(dotwhisker)
 library(tidytext)
+library(ggthemes)
 library(tidyverse)
 ```
 
@@ -290,53 +290,100 @@ ggsave("presidential_speeches/con_box_plot.png")
 
 sentiment_speeches[is.na(sentiment_speeches)] = 0
 
-# Making linear regression tables for each candidate by category
+# Making linear regression plots for each candidate by category
 
-populism_regression <- lm(populism_percent ~ speaker, sentiment_speeches) %>% 
-  tidy(conf.int = T) %>% 
-  select(term, estimate, conf.low, conf.high) %>% 
-  gt() %>% 
-  tab_header(title = "Linear Regression of Candidate on Populist Language",
-             subtitle = "Using Barack Obama as Baseline") %>%
-  
-  cols_label(term = "Candidate", estimate = "Estimate",
-             conf.low = "Lower Bound", conf.high = "Upper Bound")
+populism_regression <- lm(populism_percent ~ speaker, sentiment_speeches)
 
-immigration_regression <- lm(immigration_percent ~ speaker, sentiment_speeches) %>% 
-  tidy(conf.int = T) %>% 
-  select(term, estimate, conf.low, conf.high) %>% 
-  gt() %>% 
-  tab_header(title = "Linear Regression of Candidate on Language Relating to Immigration",
-             subtitle = "Using Bernie Sanders as Baseline") %>% 
-   tab_spanner(label =  "Confidence Interval", columns = c("conf.low", "conf.high")) %>% 
-  cols_label(term = "Candidate", estimate = "Estimate",
-             conf.low = "Lower Bound", conf.high = "Upper Bound")
+pop_reg <- dwplot(populism_regression, show_intercept = T, conf.level = .90) %>%
+  relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
+                     "speakerBernie Sanders" = "Bernie Sanders",
+                     "speakerDonald Trump" = "Donald Trump",
+                     "speakerHilary Clinton" = "Hilary Clinton",
+                     "speakerMitt Romney" = "Mitt Romney") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+  labs(title = "Linear Regression of Candidate on Percent
+       Populist Language",
+       x = "Coefficient Estimate")
 
-immigration_party_regression <- lm(immigration_percent ~ party, sentiment_speeches) %>% 
-  tidy(conf.int = T) %>% 
-  select(term, estimate, conf.low, conf.high) %>% 
-  gt() %>% 
-  tab_header(title = "Linear Regression of Party on Language Relating to Immigration",
-             subtitle = "Using Democrats as Baseline") %>% 
-  tab_spanner(label =  "Confidence Interval", columns = c("conf.low", "conf.high")) %>% 
-  cols_label(term = "Candidate", estimate = "Estimate",
-             conf.low = "Lower Bound", conf.high = "Upper Bound")
+pop_reg
 
-populism_regression
-immigration_regression
-immigration_party_regression
+ggsave("presidential_speeches/pop_reg_plot.png")
+
+immigration_regression <- lm(immigration_percent ~ speaker, sentiment_speeches)
+
+img_reg <- dwplot(immigration_regression, show_intercept = T, conf.level = .90) %>%
+  relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
+                     "speakerBernie Sanders" = "Bernie Sanders",
+                     "speakerDonald Trump" = "Donald Trump",
+                     "speakerHilary Clinton" = "Hilary Clinton",
+                     "speakerMitt Romney" = "Mitt Romney") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+  labs(title = "Linear Regression of Candidate on Percent Language
+       Relating to Immigration",
+       x = "Coefficient Estimate")
+
+img_reg
+
+ggsave("presidential_speeches/img_reg_plot.png")
+
+environment_regression <- lm(environment_percent ~ speaker, sentiment_speeches)
+
+env_reg <- dwplot(environment_regression, show_intercept = T, conf.level = .90) %>%
+  relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
+                     "speakerBernie Sanders" = "Bernie Sanders",
+                     "speakerDonald Trump" = "Donald Trump",
+                     "speakerHilary Clinton" = "Hilary Clinton",
+                     "speakerMitt Romney" = "Mitt Romney") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+  labs(title = "Linear Regression of Candidate on Percent Language
+       Relating to the Environment",
+       x = "Coefficient Estimate")
+
+env_reg
+
+ggsave("presidential_speeches/env_reg_plot.png")
+
+progressive_regression <- lm(progressive_percent ~ speaker, sentiment_speeches)
+
+pro_reg <- dwplot(progressive_regression, show_intercept = T, conf.level = .90) %>%
+  relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
+                     "speakerBernie Sanders" = "Bernie Sanders",
+                     "speakerDonald Trump" = "Donald Trump",
+                     "speakerHilary Clinton" = "Hilary Clinton",
+                     "speakerMitt Romney" = "Mitt Romney") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+  labs(title = "Linear Regression of Candidate on Percent
+       Progressive Language",
+       x = "Coefficient Estimate")
+
+pro_reg
+
+ggsave("presidential_speeches/pro_reg_plot.png")
+
+conservatism_regression <- lm(conservatism_percent ~ speaker, sentiment_speeches)
+
+con_reg <- dwplot(conservatism_regression, show_intercept = T, conf.level = .90) %>%
+  relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
+                     "speakerBernie Sanders" = "Bernie Sanders",
+                     "speakerDonald Trump" = "Donald Trump",
+                     "speakerHilary Clinton" = "Hilary Clinton",
+                     "speakerMitt Romney" = "Mitt Romney") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+  labs(title = "Linear Regression of Candidate on Percent
+       Conservative Language",
+       x = "Coefficient Estimate")
+
+con_reg
+
+ggsave("presidential_speeches/con_reg_plot.png")
 ```
-
-
-```{r regression plot, include = FALSE}
-
-plot(populism_regression$`_data`$estimate, 1:4, xlim = c(-4, 6), ylim = c(1, 4), pch = 16)
-arrows(x0 = populism_regression$`_data`$conf.low[1], x1 = populism_regression$`_data`$conf.high[1], y0 = 1, length = 0)
-
-```
-
-
-
-
-
-

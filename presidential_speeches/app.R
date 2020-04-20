@@ -19,7 +19,7 @@ ui <- navbarPage(theme = shinytheme("united"),
                     h3("Histogram Analysis"),
                     p("Explain some of the conclusions from the plots"),
                     p("Use this to make new paragraph")),
-             column(7,
+             column(8,
              selectInput("hist", 
                          "Select a Content Category", 
                          choices = c("Populism", 
@@ -31,7 +31,7 @@ ui <- navbarPage(theme = shinytheme("united"),
              column(3,
                     h3("Box Plot Analysis"),
                     p("Explain box plots here")),
-             column(7,
+             column(8,
                     selectInput("box", 
                                 "Select a Content Category", 
                                 choices = c("Populism", 
@@ -39,7 +39,19 @@ ui <- navbarPage(theme = shinytheme("united"),
                                             "Environment", 
                                             "Progressivism",
                                             "Conservatism")), 
-                    plotOutput("boxPlot", width = 200))),
+                    plotOutput("boxPlot")),
+             column(3,
+                    h3("Linear Regression Plot Analysis"),
+                    p("Explanation")),
+             column(8,
+                    selectInput("reg", 
+                                "Select a Content Category", 
+                                choices = c("Populism", 
+                                            "Immigration", 
+                                            "Environment", 
+                                            "Progressivism",
+                                            "Conservatism")),
+                    plotOutput("regPlot"))),
     tabPanel("Analysis",
              h1("Conclusions")),
     tabPanel("Method",
@@ -124,6 +136,43 @@ server <- function(input, output) {
                  height = 400,
                  width = 1000,
                  alt = 'plot')
+        }
+    }, deleteFile = FALSE)
+    
+    output$regPlot <- renderImage({
+        if(input$reg == "Populism"){
+            filename <- normalizePath(file.path("pop_reg_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 1000,
+                 alt = 'plot')}
+        else if(input$reg == "Immigration") {
+            filename <- normalizePath(file.path("img_reg_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 1000,
+                 alt = 'plot')  
+        }
+        else if(input$reg == "Environment") {
+            filename <- normalizePath(file.path("env_reg_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 1000,
+                 alt = 'plot')  
+        }
+        else if(input$reg == "Progressivism") {
+            filename <- normalizePath(file.path("pro_reg_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 1000,
+                 alt = 'plot')  
+        }
+        else if(input$reg == "Conservatism") {
+            filename <- normalizePath(file.path("con_reg_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 1000,
+                 alt = 'plot')  
         }
     }, deleteFile = FALSE)
 }
