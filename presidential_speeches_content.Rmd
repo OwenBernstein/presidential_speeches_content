@@ -295,7 +295,7 @@ sentiment_speeches[is.na(sentiment_speeches)] = 0
 
 populism_regression <- lm(populism_percent ~ speaker, sentiment_speeches)
 
-pop_reg <- dwplot(populism_regression, show_intercept = T, conf.level = .90) %>%
+pop_reg <- dwplot(populism_regression, show_intercept = T, conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -314,7 +314,7 @@ ggsave("presidential_speeches/pop_reg_plot.png")
 
 immigration_regression <- lm(immigration_percent ~ speaker, sentiment_speeches)
 
-img_reg <- dwplot(immigration_regression, show_intercept = T, conf.level = .90) %>%
+img_reg <- dwplot(immigration_regression, show_intercept = T, conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -333,7 +333,7 @@ ggsave("presidential_speeches/img_reg_plot.png")
 
 environment_regression <- lm(environment_percent ~ speaker, sentiment_speeches)
 
-env_reg <- dwplot(environment_regression, show_intercept = T, conf.level = .90) %>%
+env_reg <- dwplot(environment_regression, show_intercept = T, conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -352,7 +352,7 @@ ggsave("presidential_speeches/env_reg_plot.png")
 
 progressive_regression <- lm(progressive_percent ~ speaker, sentiment_speeches)
 
-pro_reg <- dwplot(progressive_regression, show_intercept = T, conf.level = .90) %>%
+pro_reg <- dwplot(progressive_regression, show_intercept = T, conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -371,7 +371,7 @@ ggsave("presidential_speeches/pro_reg_plot.png")
 
 conservatism_regression <- lm(conservatism_percent ~ speaker, sentiment_speeches)
 
-con_reg <- dwplot(conservatism_regression, show_intercept = T, conf.level = .90) %>%
+con_reg <- dwplot(conservatism_regression, show_intercept = T, conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",

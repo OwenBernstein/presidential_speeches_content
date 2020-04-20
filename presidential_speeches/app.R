@@ -52,8 +52,15 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
     tabPanel("Model",
              column(3,
                     h3("Histogram Analysis"),
-                    p("Explain some of the conclusions from the plots"),
-                    p("Use this to make new paragraph")),
+                    p("These histograms display the distribution of language
+                      within each candidate’s speeches. Barack Obama, during his
+                      2008 campaign, gave significantly more speeches than any
+                      other candidate gave during their respective campaigns
+                      which somewhat skews the scale of the y axis. However,
+                      each histogram still displays interesting information
+                      about the candidate’s speeches. For example, Bernie
+                      Sanders’ use of populist language has a wide distribution
+                      without any obvious concentration of observations. ")),
              column(8,
              selectInput("hist", 
                          "Select a Content Category", 
@@ -65,7 +72,16 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              plotOutput("histPlot")),
              column(3,
                     h3("Box Plot Analysis"),
-                    p("Explain box plots here")),
+                    p("Box plots offer a depiction of each candidate’s language
+                      usage in speeches that allows for easier comparison across
+                      candidates. The box plot marks the 25th and 75th
+                      percentiles as well as the median percent populist
+                      language for each candidate. It also marks outliers,
+                      speeches that contain an unusual amount of a certain
+                      category of language, as dots. From these plots it is easy
+                      to see that Bernie Sander typically uses significantly
+                      more populist language than other candidates while Donald
+                      Trump uses more language relating to immigration. ")),
              column(8,
                     selectInput("box", 
                                 "Select a Content Category", 
@@ -77,7 +93,17 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                     plotOutput("boxPlot")),
              column(3,
                     h3("Linear Regression Plot Analysis"),
-                    p("Explanation")),
+                    p("The linear regression plots allow us to view the point
+                      estimate as well as a 95% confidence interval for a
+                      regression of candidate on each content category. These
+                      plots show the expected difference in language between a
+                      Barack Obama speech and another candidate’s speech. They
+                      allow us to statistically compare the expected amount of a
+                      certain category of language between candidates. For
+                      example, a Bernie Sanders speech is expected to use about
+                      1.9% more populist language than a Barack Obama speech and
+                      we are 95% confident that this value is between about 1.5%
+                      and 2.3%.")),
              column(8,
                     selectInput("reg", 
                                 "Select a Content Category", 
