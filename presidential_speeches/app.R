@@ -116,12 +116,50 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
     tabPanel("Analysis",
              h1("Conclusions")),
     tabPanel("Method",
+             column(7,
              h1("Methodology"),
-             p("This is where I got my method from, include links"),
+             p("I decided to follow the research model theoretically outlined by
+             Michael Laver and John Garry in 2000 and 2003 and put into practice
+             in Belgium by Teun Pauwels and Spain by Pablo Ribera Payá. This
+             required gathering the transcripts of campaign speeches by each
+             candidate during their bid for the presidency. The text of many of
+             the speeches were transcribed with slight differences. Many of the
+             transcriptions included audience member interjections written as
+             “Audience Member: …” and some transcripts included crowd reactions
+             such as “applause” or “laughing.” I removed as many of these
+             instances as I could, however, I was not able to carefully read
+             each speech and therefore there could be some modeling error from
+             the differing transcription styles."),
+             p("After removing the words not said by the candidate, I counted
+             the number of words in each speech. I then counted the number of
+             words relating to each content category. The dictionary of words
+             I selected was modeled directly from Teun Pauwels dictionary and
+             is displayed on the right. Pauwels study was primarily focused on
+             populist ideologies and Flemish Nationalism and therefore the
+             dictionaries for immigration, environment, progressivism, and
+             conservatism are considerably less reliable and flushed out than
+             the dictionary for populism. Furthermore, as Laver and Garry
+             explicitly explain, the dictionaries needed for text analysis of
+             this sort will vary drastically based on political context. For
+             example, words such as wall, child separation, and quota relate to
+             immigration in the United States but were not included in the
+             dictionary designed for Belgium. Another difficulty in this method
+             of content analysis is that each word in the dictionaries can be
+             used with varying intention. However, the methods used in other
+             literature frequently ignore this possible source of error. Some
+             literature suggests hand coding each observation of a word as
+             either positive or negative. This method is very labor intensive
+             and would limit the number of speeches that could be included in
+             the study. Furthermore, this method was not used in the Pauwel
+             study that I used as inspiration and I therefore did not follow
+             this suggestion. After counting words based on content category,
+             I turned the count into a percentage of total words in the speech
+             and used this percentage for analysis.")),
+             column(7,
              h1("Literature"),
              p("Discussion of literature and why it does not match perfectly"),
              h1("Data"),
-             p("Where I got the data from")))
+             p("Where I got the data from"))))
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
