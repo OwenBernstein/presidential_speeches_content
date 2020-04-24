@@ -206,12 +206,38 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              study that I used as inspiration and I therefore did not follow
              this suggestion. After counting words based on content category,
              I turned the count into a percentage of total words in the speech
-             and used this percentage for analysis.")),
-             column(7,
+             and used this percentage for analysis."),
              h1("Literature"),
              p("Discussion of literature and why it does not match perfectly"),
              h1("Data"),
-             p("Where I got the data from"))))
+             p("Where I got the data from")),
+             column(5,
+             h3("Excerpt from Donald Trump speech at the KI Convention Center in
+                Green Bay, Wisconsin on October 17th, 2016:"),
+             p("\"If I'm elected President I am going to keep Radical",
+               span("Islamic", style = "color:purple"), "Terrorists out of our
+               country. We will also stop the crisis of",
+               span("illegal immigration.", style = "color:purple"), "A Trump
+               Administration will secure and defend our borders. And yes, we
+               will build a wall. We have the first-ever endorsement from our
+               ICE and Border Patrol officers. As Secretary of State, Hillary
+               Clinton allowed thousands of criminal aliens to be released
+               because their home countries wouldn't take them back. The ICE
+               officers described Hillary's proposal as, quote, “the most
+               radical", span("immigration", style = "color:purple"), "proposal
+               in U.S. history.\" Here is a summary of the Hillary plan:--
+               Support for Sanctuary Cities--", span("Social",
+               style = "color:blue"), "Security, Medicare and lifetime welfare
+               for", span("illegal immigrants", style = "color:purple"), "by
+               making them all citizens-- Obamacare for", span("illegal
+               immigrants", style = "color:purple"), "-- No deportation of visa
+               overstays-- Expanding catch-and-release on the border-- Expanding
+               President Obama's unconstitutional executive amnesty, including
+               instant work permits for millions of", span("illegal",
+               style = "color:purple"), "workers-- Freeing even more criminal
+               aliens by expanding Obama's non-enforcement", span("directives-",
+               style = "color:red"), "A 550% increase in Syrian refugees. Either
+               we win this election, or we lose the country.\""))))
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
