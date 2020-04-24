@@ -48,8 +48,60 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              p("My name is Owen Bernstein and I am currently an undergraduate at
              Harvard studying government with a specialization in data science. 
              You can reach me at owenbernstein@college.harvard.edu.")),
-             tags$style(HTML("body, pre { font-size: 16pt; }"))),
-    tabPanel("Model",
+             tags$style(HTML("body, pre { color: black; font-size: 16pt; }")),
+             column(5, 
+             h3("Excerpt from Bernie Sanders speech in Concord, New Hampshire on
+                February 9th, 2016:"),
+             p("\"No, we will not allow huge tax breaks for billionaires, we
+             will not allow packed -- huge cuts to", span("social",
+             style = "color:blue"), "security, veterans needs, Medicare,
+             MedicAid, and", span("education", style = "color:blue"), "No, we
+             will not allow back into the White House a political party which is
+             so beholden to the fossil fuel industry that they cannot even
+             acknowledge the scientific reality of", span("climate",
+             style = "color:green"), "change. The", span("people",
+             style = "color:red"), "of New Hampshire have sent a profound
+             message to the", span("political establishment,",
+             style = "color:red"), "to economic", span("establishment",
+             style = "color:red"), "and by the way, to the media",
+             span("establishment", style = "color:red"), "the", span("people",
+             style = "color:red"), "here have said is given the enormous crises
+             facing our country, it is just too late for the same old, same
+             old", span("establishment politics,", style = "color:red"), "and",
+             span("establishment ", style = "color:red"), "economics. The",
+             span("people", style = "color:red"), "want real change. What the
+             American", span("people", style = "color:red"), "are saying -- and,
+             by the way, I hear this not just from", span("progressives,",
+             style = "color:blue"), "but from", span("conservatives",
+             style = "color:orange"), "and from moderates, is that we can no
+             longer continue to have a campaign finances system in which Wall
+             Street and the billionaire", span("class", style = "color:red"),
+             "are able to buy elections. Americans, no matter what their",
+             span("political", style = "color:red"), "view may be, understand
+             that that is not what democracy is about.\"",
+             style = "color:black"),
+             h3("Excerpt from Mitt Romney speech at the Conservative Political
+                Action Conference on  February 10th, 2012:"),
+             p("The", span("values", style = "color:orange"), "that allowed my
+               parents to achieve their dreams are the same", span("values",
+               style = "color:orange"), "they instilled in my siblings and me.
+               Those aren't", span("values", style = "color:orange"), "I just
+               talk about; they are", span("values", style = "color:orange"),
+               "that I live every day. My 42-year marriage to my wife, Ann; the
+               life we've built with our five sons; and the faith that sustains
+               us — these", span("conservative", style = "color:orange"),
+               "constants have shaped my life. In business, if you're not
+               fiscally", span("conservative,", style = "color:orange"), "you're
+               bankrupt. I spent 25 years balancing budgets, eliminating waste,
+               and keeping as far away from government as was humanly possible.
+               I did things", span("conservatism", style = "color:orange"), "is
+               designed for — I started new businesses and turned around broken
+               ones. And I am not", span("ashamed", style = "color:red"), "to
+               say that I was very successful at it. I know",
+               span("conservatism", style = "color:orange"), "because I have
+               lived", span("conservatism.", style = "color:orange"),
+               stle = "color:black"))),
+    tabPanel("By Candidate",
              column(3,
                     h3("Histogram Analysis"),
                     p("These histograms display the distribution of language
@@ -113,7 +165,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                                             "Progressivism",
                                             "Conservatism")),
                     plotOutput("regPlot"))),
-    tabPanel("Analysis",
+    tabPanel("By Party",
              h1("Conclusions")),
     tabPanel("Method",
              column(7,

@@ -47,8 +47,10 @@ tidy_speeches <- speeches %>%
   group_by(speaker, title, region, date) %>% 
   unnest_tokens(word, text) %>%
   anti_join(stop_words) %>% 
-  filter(! word == "applause" & ! word == "inaudible" &
-          ! word == "cheers" & ! word == "laughing") %>% 
+  filter(! word %in% c("applause", "inaudible","cheers", "laughing",
+                       "[applause]", "[inaudible]", "[cheers]",
+                       "[laughing]", "(applause)", "(inaudible)","(cheers)",
+                       "(laughing)")) %>% 
   count(word) %>% 
   mutate(total_words = sum(n))
 ```
@@ -107,7 +109,7 @@ progressive <- tidy_speeches %>%
 
 conservatism <- tidy_speeches %>% 
   group_by(speaker, title, region, total_words, date) %>% 
-  filter(str_detect(word, "belief") | str_detect(word, "family")
+  filter(str_detect(word, "belief") | str_detect(word, "famil")
          | str_detect(word, "church") | str_detect(word, "norm")
          | str_detect(word, "porn") | str_detect(word, "sex")
          | str_detect(word, "values") | str_detect(word, "conservative")
@@ -388,3 +390,7 @@ con_reg
 
 ggsave("presidential_speeches/con_reg_plot.png")
 ```
+
+
+
+
