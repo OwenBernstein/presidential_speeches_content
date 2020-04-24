@@ -400,8 +400,8 @@ ggsave("presidential_speeches/con_reg_plot.png")
 
 ```{r}
 
-x <- tibble(content_category = c("Populism", "Environment", "Immigration"
-                                 "Porgressivism", "Conservatism"),
+x <- tibble(content_category = c("Populism", "Environment", "Immigration",
+                                 "Progressivism", "Conservatism"),
             dictionary = c("*deceit*, *treason*, *betray*, *absurd*, *arrogant*, *promise*, *corrupt*, *direct*, *elite*, *establishment*, *ruling*, *caste*, *class*, *mafia*, *freedom of expression*, *undemocratic*, *politic*, *propoganda*, *referend*, *regime*, *admit*, *shame*, *tradition*, *people*", "*green*, *climate, *environment*, *heating*, *durable*", "*asylum*, *halal*, *scarf*, *illegal*, *immigra*, *Islam*, *Koran*, *Muslim*, *foreign*", "*progress*, *right*, *freedom*, *self-disposition*, *handicap*, *poverty*, *protection*, *honest*, *equal*, *education*, *pension*, *social*, *weak*", "*belief*, *famil*, *church*, *norm*, *porn*, *sex*, *values*, *conservative*, *custom*")) %>%
   gt() %>% 
   tab_header(title = "Dictionary for Content Analysis") %>% 
