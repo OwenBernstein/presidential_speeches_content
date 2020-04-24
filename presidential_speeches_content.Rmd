@@ -17,6 +17,7 @@ library(janitor)
 library(dotwhisker)
 library(tidytext)
 library(ggthemes)
+library(webshot)
 library(tidyverse)
 ```
 
@@ -297,7 +298,8 @@ sentiment_speeches[is.na(sentiment_speeches)] = 0
 
 populism_regression <- lm(populism_percent ~ speaker, sentiment_speeches)
 
-pop_reg <- dwplot(populism_regression, show_intercept = T, conf.level = .95) %>%
+pop_reg <- dwplot(populism_regression, show_intercept = T,
+                  conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -316,7 +318,8 @@ ggsave("presidential_speeches/pop_reg_plot.png")
 
 immigration_regression <- lm(immigration_percent ~ speaker, sentiment_speeches)
 
-img_reg <- dwplot(immigration_regression, show_intercept = T, conf.level = .95) %>%
+img_reg <- dwplot(immigration_regression, show_intercept = T,
+                  conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -335,7 +338,8 @@ ggsave("presidential_speeches/img_reg_plot.png")
 
 environment_regression <- lm(environment_percent ~ speaker, sentiment_speeches)
 
-env_reg <- dwplot(environment_regression, show_intercept = T, conf.level = .95) %>%
+env_reg <- dwplot(environment_regression, show_intercept = T,
+                  conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -354,7 +358,8 @@ ggsave("presidential_speeches/env_reg_plot.png")
 
 progressive_regression <- lm(progressive_percent ~ speaker, sentiment_speeches)
 
-pro_reg <- dwplot(progressive_regression, show_intercept = T, conf.level = .95) %>%
+pro_reg <- dwplot(progressive_regression, show_intercept = T,
+                  conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -371,9 +376,11 @@ pro_reg
 
 ggsave("presidential_speeches/pro_reg_plot.png")
 
-conservatism_regression <- lm(conservatism_percent ~ speaker, sentiment_speeches)
+conservatism_regression <- lm(conservatism_percent ~ speaker,
+                              sentiment_speeches)
 
-con_reg <- dwplot(conservatism_regression, show_intercept = T, conf.level = .95) %>%
+con_reg <- dwplot(conservatism_regression, show_intercept = T,
+                  conf.level = .95) %>%
   relabel_predictors("(Intercept)" = "Barack Obama as Baseline",
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
@@ -389,6 +396,16 @@ con_reg <- dwplot(conservatism_regression, show_intercept = T, conf.level = .95)
 con_reg
 
 ggsave("presidential_speeches/con_reg_plot.png")
+```
+
+```{r}
+
+x <- tibble(content_category = c("Populism", "Environment", "Immigration"
+                                 "Porgressivism", "Conservatism"),
+            dictionary = c("*deceit*, *treason*, *betray*, *absurd*, *arrogant*, *promise*, *corrupt*, *direct*, *elite*, *establishment*, *ruling*, *caste*, *class*, *mafia*, *freedom of expression*, *undemocratic*, *politic*, *propoganda*, *referend*, *regime*, *admit*, *shame*, *tradition*, *people*", "*green*, *climate, *environment*, *heating*, *durable*", "*asylum*, *halal*, *scarf*, *illegal*, *immigra*, *Islam*, *Koran*, *Muslim*, *foreign*", "*progress*, *right*, *freedom*, *self-disposition*, *handicap*, *poverty*, *protection*, *honest*, *equal*, *education*, *pension*, *social*, *weak*", "*belief*, *famil*, *church*, *norm*, *porn*, *sex*, *values*, *conservative*, *custom*")) %>%
+  gt() %>% 
+  tab_header(title = "Dictionary for Content Analysis") %>% 
+  cols_label(content_category = "Content Category", dictionary = "Words")
 ```
 
 
