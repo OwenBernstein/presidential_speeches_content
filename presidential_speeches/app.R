@@ -1,7 +1,15 @@
 
 library(shiny)
-library(gt)
 library(shinythemes)
+library(gt)
+library(skimr)
+library(lubridate)
+library(janitor)
+library(dotwhisker)
+library(tidytext)
+library(ggthemes)
+library(webshot)
+library(tidyverse)
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(theme = shinytheme("cerulean"),
