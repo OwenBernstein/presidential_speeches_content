@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Loading necessary packages
 
 library(gt)
+library(broom)
 library(skimr)
 library(lubridate)
 library(janitor)
@@ -140,7 +141,7 @@ sentiment_speeches <- populism %>%
          progressive_percent = progressive_count / total_words * 100,
          conservatism_percent = conservatism_count / total_words * 100,
          party = ifelse(speaker == "Donald Trump" |
-                          speaker == "Mitt Romney", "republican", "democrat"),
+                          speaker == "Mitt Romney", "Republican", "Democrat"),
          date = mdy(date)) %>%
   distinct()
 ```
@@ -400,12 +401,159 @@ ggsave("presidential_speeches/con_reg_plot.png")
 
 ```{r}
 
-x <- tibble(content_category = c("Populism", "Environment", "Immigration",
-                                 "Progressivism", "Conservatism"),
-            dictionary = c("*deceit*, *treason*, *betray*, *absurd*, *arrogant*, *promise*, *corrupt*, *direct*, *elite*, *establishment*, *ruling*, *caste*, *class*, *mafia*, *freedom of expression*, *undemocratic*, *politic*, *propoganda*, *referend*, *regime*, *admit*, *shame*, *tradition*, *people*", "*green*, *climate, *environment*, *heating*, *durable*", "*asylum*, *halal*, *scarf*, *illegal*, *immigra*, *Islam*, *Koran*, *Muslim*, *foreign*", "*progress*, *right*, *freedom*, *self-disposition*, *handicap*, *poverty*, *protection*, *honest*, *equal*, *education*, *pension*, *social*, *weak*", "*belief*, *famil*, *church*, *norm*, *porn*, *sex*, *values*, *conservative*, *custom*")) %>%
-  gt() %>% 
-  tab_header(title = "Dictionary for Content Analysis") %>% 
-  cols_label(content_category = "Content Category", dictionary = "Words")
+# Making histograms for each category by party
+
+sentiment_speeches[is.na(sentiment_speeches)] = 0
+
+party_populism_hist <- sentiment_speeches %>% 
+  ggplot(aes(populism_percent)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~ party) +
+  labs(title = "Populist Language in Speeches by Party",
+       x = "Percent Populist Language",
+       y = "Number of Speeches") +
+  theme_minimal()
+
+party_populism_hist
+
+ggsave("presidential_speeches/party_pop_hist_plot.png")
+
+
+party_immigration_hist <- sentiment_speeches %>% 
+  ggplot(aes(immigration_percent)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~ party) +
+  labs(title = "Language Relating to Immigration in Speeches by Party",
+       x = "Percent Language Relating to Immigration",
+       y = "Number of Speeches") +
+  theme_minimal()
+
+party_immigration_hist
+
+ggsave("presidential_speeches/party_img_hist_plot.png")
+
+party_environment_hist <- sentiment_speeches %>% 
+  ggplot(aes(environment_percent)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~ party) +
+  labs(title = "Language Relating to the Envrironment in Speeches by party",
+       x = "Percent Language Relating to the Environment",
+       y = "Number of Speeches") +
+  theme_minimal()
+
+party_environment_hist
+
+ggsave("presidential_speeches/party_env_hist_plot.png")
+
+party_progressive_hist <- sentiment_speeches %>% 
+  ggplot(aes(progressive_percent)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~ party) +
+  labs(title = "Progressive Language in Speeches by Party",
+       x = "Percent Progressive Language",
+       y = "Number of Speeches") +
+  theme_minimal()
+
+party_progressive_hist
+
+ggsave("presidential_speeches/party_pro_hist_plot.png")
+
+party_conservatism_hist <- sentiment_speeches %>% 
+  ggplot(aes(conservatism_percent)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~ party) +
+  labs(title = "Conservative Language in Speeches by Party",
+       x = "Percent Conservative Language",
+       y = "Number of Speeches") +
+  theme_minimal()
+
+party_conservatism_hist
+
+ggsave("presidential_speeches/party_con_hist_plot.png")
+```
+
+```{r}
+
+# Setting nas to 0
+
+sentiment_speeches[is.na(sentiment_speeches)] = 0
+
+# Creating box plots for each party by category
+
+party_populism_box <- sentiment_speeches %>% 
+  ggplot(., aes(party, populism_percent)) +
+  geom_boxplot() + 
+  labs(title = "Populist Language in Speeches by Party",
+       x = "Party", y = "Percent Populist Language") +
+  theme_minimal() +
+  theme(axis.line = element_line())
+
+party_populism_box
+
+ggsave("presidential_speeches/party_pop_box_plot.png")
+
+party_immigration__box <- ggplot(sentiment_speeches, aes(party,
+                                                         immigration_percent)) +
+  geom_boxplot() +
+  labs(title = "Language Relating to Immigration in Speeches by Party",
+       x = "Party", y = "Percent
+       Language Relating to Immigration") +
+  theme_minimal() +
+  theme(axis.line = element_line())
+
+party_immigration__box
+
+ggsave("presidential_speeches/party_img_box_plot.png")
+
+party_environment_box <- ggplot(sentiment_speeches,
+                          aes(party, environment_percent)) +
+  geom_boxplot() +
+  labs(title = "Language Relating to the Environment in Speeches by Party",
+       x = "Party", y = "Percent Populist Language") +
+  theme_minimal() +
+  theme(axis.line = element_line())
+
+party_environment_box
+
+ggsave("presidential_speeches/party_env_box_plot.png")
+
+party_progressive_box <- ggplot(sentiment_speeches,
+                          aes(party, progressive_percent)) +
+  geom_boxplot() +
+  labs(title = "Progressive Language in Speeches by Party",
+       x = "Party", y = "Percent Progressive Language") +
+  theme_minimal() +
+  theme(axis.line = element_line())
+
+party_progressive_box
+
+ggsave("presidential_speeches/party_pro_box_plot.png")
+
+party_conservatism_box <- ggplot(sentiment_speeches,
+                           aes(party, conservatism_percent)) +
+  geom_boxplot() +
+  labs(title = "Conservative Language in Speeches by Party",
+       x = "Party", y = "Percent Conservative Language") +
+  theme_minimal() +
+  theme(axis.line = element_line())
+
+party_conservatism_box 
+
+ggsave("presidential_speeches/party_con_box_plot.png")
+```
+
+```{r}
+
+# Setting nas to 0
+
+sentiment_speeches[is.na(sentiment_speeches)] = 0
+
+# Making linear regression plots for each candidate by category
+
+party_populism_regression <- lm(populism_percent ~ party, sentiment_speeches) %>% 
+  tidy(conf.int = T) %>% 
+  mutate(party = c("Democrat", "Republican")) %>% 
+  select(party, estimate, conf.low, conf.high)
 ```
 
 

@@ -8,15 +8,16 @@ library(janitor)
 library(dotwhisker)
 library(tidytext)
 library(ggthemes)
-library(webshot)
+library(rsconnect)
 library(tidyverse)
+
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(theme = shinytheme("cerulean"),
     "Content Analysis of Presidential Speeches",
     tabPanel("About", 
              column(7,
-             h1("Background"),
+             h2("Background"),
              p("In recent years, populism, and all of its associated meanings,
              have gained a prominent position in public discourse. In 2017, due
              to the installment of populist leaders around the world and
@@ -41,7 +42,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              populist language has changed over time, which presidential
              candidates have talked about immigration the most, or which
              political party talks about the environment more frequently."),
-             h1("About the Data"),
+             h2("About the Data"),
              p("The data for this project are the assembled campaign speeches of
                presidential candidates from the 2004 election to the 2016
                election. The transcripts of these speeches are publicly
@@ -53,11 +54,11 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                presidential public documents. I also gathered speeches from Data
                Society on the website data.world. More details about the data
                can be found in the methods tab. "),
-             h1("About Me"),
+             h2("About Me"),
              p("My name is Owen Bernstein and I am currently an undergraduate at
              Harvard studying government with a specialization in data science. 
              You can reach me at owenbernstein@college.harvard.edu.")),
-             tags$style(HTML("body, pre { color: black; font-size: 16pt; }")),
+             tags$style(HTML("body, pre { color: black; font-size: 12pt; }")),
              column(5, 
              h3("Excerpt from Bernie Sanders speech in Concord, New Hampshire on
                 February 9th, 2016:"),
@@ -111,7 +112,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                lived", span("conservatism.", style = "color:orange"),"\"",
                stle = "color:black"))),
     tabPanel("By Candidate",
-             column(3,
+             column(4,
                     h3("Histogram Analysis"),
                     p("These histograms display the distribution of language
                       within each candidate’s speeches. Barack Obama, during his
@@ -122,7 +123,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                       about the candidate’s speeches. For example, Bernie
                       Sanders’ use of populist language has a wide distribution
                       without any obvious concentration of observations. ")),
-             column(8,
+             column(7,
              selectInput("hist", 
                          "Select a Content Category", 
                          choices = c("Populism", 
@@ -131,7 +132,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                                      "Progressivism",
                                      "Conservatism")),
              plotOutput("histPlot")),
-             column(3,
+             column(4,
                     h3("Box Plot Analysis"),
                     p("Box plots offer a depiction of each candidate’s language
                       usage in speeches that allows for easier comparison across
@@ -143,7 +144,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                       to see that Bernie Sander typically uses significantly
                       more populist language than other candidates while Donald
                       Trump uses more language relating to immigration. ")),
-             column(8,
+             column(7,
                     selectInput("box", 
                                 "Select a Content Category", 
                                 choices = c("Populism", 
@@ -152,7 +153,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                                             "Progressivism",
                                             "Conservatism")), 
                     plotOutput("boxPlot")),
-             column(3,
+             column(4,
                     h3("Linear Regression Plot Analysis"),
                     p("The linear regression plots allow us to view the point
                       estimate as well as a 95% confidence interval for a
@@ -165,7 +166,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                       1.9% more populist language than a Barack Obama speech and
                       we are 95% confident that this value is between about 1.5%
                       and 2.3%.")),
-             column(8,
+             column(7,
                     selectInput("reg", 
                                 "Select a Content Category", 
                                 choices = c("Populism", 
@@ -175,7 +176,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                                             "Conservatism")),
                     plotOutput("regPlot"))),
     tabPanel("Method",
-             column(7,
+             column(10,
              h1("Methodology"),
              p("I decided to follow the research model theoretically outlined by
              Michael Laver and John Garry in 2000 and 2003 and put into practice
@@ -193,7 +194,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              the number of words in each speech. I then counted the number of
              words relating to each content category. The dictionary of words
              I selected was modeled directly from Teun Pauwels dictionary and
-             is displayed on the right. Pauwels study was primarily focused on
+             is displayed below. Pauwels study was primarily focused on
              populist ideologies and Flemish Nationalism and therefore the
              dictionaries for immigration, environment, progressivism, and
              conservatism are considerably less reliable and flushed out than
@@ -213,8 +214,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              study that I used as inspiration and I therefore did not follow
              this suggestion. After counting words based on content category,
              I turned the count into a percentage of total words in the speech
-             and used this percentage for analysis.")),
-             column(5,
+             and used this percentage for analysis."),
              gt_output("dictionary"))))
 
 # Define server logic required to draw a histogram
@@ -225,34 +225,34 @@ server <- function(input, output) {
             filename <- normalizePath(file.path("pop_hist_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')}
         else if(input$hist == "Immigration") {
             filename <- normalizePath(file.path("img_hist_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$hist == "Environment") {
             filename <- normalizePath(file.path("env_hist_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$hist == "Progressivism") {
             filename <- normalizePath(file.path("pro_hist_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$hist == "Conservatism") {
             filename <- normalizePath(file.path("con_hist_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
     }, deleteFile = FALSE)
@@ -262,34 +262,34 @@ server <- function(input, output) {
             filename <- normalizePath(file.path("pop_box_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')}
         else if(input$box == "Immigration") {
             filename <- normalizePath(file.path("img_box_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$box == "Environment") {
             filename <- normalizePath(file.path("env_box_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$box == "Progressivism") {
             filename <- normalizePath(file.path("pro_box_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$box == "Conservatism") {
             filename <- normalizePath(file.path("con_box_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')
         }
     }, deleteFile = FALSE)
@@ -299,34 +299,34 @@ server <- function(input, output) {
             filename <- normalizePath(file.path("pop_reg_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')}
         else if(input$reg == "Immigration") {
             filename <- normalizePath(file.path("img_reg_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$reg == "Environment") {
             filename <- normalizePath(file.path("env_reg_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$reg == "Progressivism") {
             filename <- normalizePath(file.path("pro_reg_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
         else if(input$reg == "Conservatism") {
             filename <- normalizePath(file.path("con_reg_plot.png"))
             list(src = filename,
                  height = 400,
-                 width = 1000,
+                 width = 750,
                  alt = 'plot')  
         }
     }, deleteFile = FALSE)
@@ -339,7 +339,7 @@ server <- function(input, output) {
             tab_header(title = "Dictionary for Content Analysis") %>% 
             cols_label(content_category = "Content Category", dictionary = "Words"),
         height = 600,
-        width = 700)
+        width = 750)
     
 }
 
