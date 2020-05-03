@@ -32,10 +32,11 @@ trump_speeches <- read_csv("raw-data/donald_trump_speeches.csv")
 sanders_speeches <- read_csv("raw-data/bernie_sanders_speeches.csv")
 romney_speeches <- read_csv("raw-data/mitt_romney_speeches.csv")
 obama_speeches <- read_csv("raw-data/barack_obama_speeches.csv")
+mccain_speeches <- read_csv("raw-data/john_mccain_speeches.csv")
 
 speeches <- bind_rows(clinton_speeches, trump_speeches,
                       sanders_speeches, romney_speeches,
-                      obama_speeches)
+                      obama_speeches, mccain_speeches)
 
 # Cleaning the speeches and counting the number of words while removing stop
 # words.
@@ -45,7 +46,7 @@ tidy_speeches <- speeches %>%
   clean_names() %>% 
   filter(speaker == "Donald Trump" | speaker == "Hilary Clinton" |
            speaker == "Bernie Sanders" | speaker == "Mitt Romney" |
-           speaker == "Barack Obama") %>% 
+           speaker == "Barack Obama" | speaker == "John McCain") %>% 
   group_by(speaker, title, region, date) %>% 
   unnest_tokens(word, text) %>%
   anti_join(stop_words) %>% 
@@ -141,7 +142,8 @@ sentiment_speeches <- populism %>%
          progressive_percent = progressive_count / total_words * 100,
          conservatism_percent = conservatism_count / total_words * 100,
          party = ifelse(speaker == "Donald Trump" |
-                          speaker == "Mitt Romney", "Republican", "Democrat"),
+                          speaker == "Mitt Romney" |
+                          speaker == "John McCain", "Republican", "Democrat"),
          date = mdy(date)) %>%
   distinct()
 ```
@@ -305,7 +307,8 @@ pop_reg <- dwplot(populism_regression, show_intercept = T,
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
                      "speakerHilary Clinton" = "Hilary Clinton",
-                     "speakerMitt Romney" = "Mitt Romney") +
+                     "speakerMitt Romney" = "Mitt Romney",
+                     "speakerJohn McCain" = "John McCain") +
   theme_minimal() +
   theme(legend.position = "none") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
@@ -325,7 +328,8 @@ img_reg <- dwplot(immigration_regression, show_intercept = T,
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
                      "speakerHilary Clinton" = "Hilary Clinton",
-                     "speakerMitt Romney" = "Mitt Romney") +
+                     "speakerMitt Romney" = "Mitt Romney",
+                     "speakerJohn McCain" = "John McCain") +
   theme_minimal() +
   theme(legend.position = "none") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
@@ -345,7 +349,8 @@ env_reg <- dwplot(environment_regression, show_intercept = T,
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
                      "speakerHilary Clinton" = "Hilary Clinton",
-                     "speakerMitt Romney" = "Mitt Romney") +
+                     "speakerMitt Romney" = "Mitt Romney",
+                     "speakerJohn McCain" = "John McCain") +
   theme_minimal() +
   theme(legend.position = "none") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
@@ -365,7 +370,8 @@ pro_reg <- dwplot(progressive_regression, show_intercept = T,
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
                      "speakerHilary Clinton" = "Hilary Clinton",
-                     "speakerMitt Romney" = "Mitt Romney") +
+                     "speakerMitt Romney" = "Mitt Romney",
+                     "speakerJohn McCain" = "John McCain") +
   theme_minimal() +
   theme(legend.position = "none") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
@@ -386,7 +392,8 @@ con_reg <- dwplot(conservatism_regression, show_intercept = T,
                      "speakerBernie Sanders" = "Bernie Sanders",
                      "speakerDonald Trump" = "Donald Trump",
                      "speakerHilary Clinton" = "Hilary Clinton",
-                     "speakerMitt Romney" = "Mitt Romney") +
+                     "speakerMitt Romney" = "Mitt Romney",
+                     "speakerJohn McCain" = "John McCain") +
   theme_minimal() +
   theme(legend.position = "none") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
@@ -544,17 +551,66 @@ ggsave("presidential_speeches/party_con_box_plot.png")
 
 ```{r}
 
-# Setting nas to 0
-
 sentiment_speeches[is.na(sentiment_speeches)] = 0
 
-# Making linear regression plots for each candidate by category
+pop_time <- ggplot(sentiment_speeches, aes(date, populism_percent)) +
+  geom_jitter(alpha = 0.5, width = 100) +
+  geom_smooth(method = "lm", se = F) +
+  labs(title = "Populist Language in Presidential Speeches Over Time",
+       x = "Date of Speech", y = "Percent Populist Language") +
+  theme_minimal()
 
-party_populism_regression <- lm(populism_percent ~ party, sentiment_speeches) %>% 
-  tidy(conf.int = T) %>% 
-  mutate(party = c("Democrat", "Republican")) %>% 
-  select(party, estimate, conf.low, conf.high)
+populism_time
+
+
+img_time <- ggplot(sentiment_speeches, aes(date, immigration_percent)) +
+  geom_jitter(alpha = 0.5, width = 100) +
+  geom_smooth(method = "lm", se = F) +
+  labs(title = "Language Relating to Immigration in Presidential Speeches Over Time",
+       x = "Date of Speech", y = "Percent Language Relating to Immigration") +
+  theme_minimal()
+
+img_time
+
+env_time <- ggplot(sentiment_speeches, aes(date, environment_percent)) +
+  geom_jitter(alpha = 0.5, width = 100) +
+  geom_smooth(method = "lm", se = F) +
+  labs(title = "Language Relating to the Environment in Presidential Speeches Over Time",
+       x = "Date of Speech", y = "Percent Language Relating to the Environment") +
+  theme_minimal()
+
+env_time
+
+pro_time <- ggplot(sentiment_speeches, aes(date, progressive_percent)) +
+  geom_jitter(alpha = 0.5, width = 100) +
+  geom_smooth(method = "lm", se = F) +
+  labs(title = "Progressive Language in Presidential Speeches Over Time",
+       x = "Date of Speech", y = "Percent Progressive Language") +
+  theme_minimal()
+
+pro_time
+
+con_time <- ggplot(sentiment_speeches, aes(date, conservatism_percent)) +
+  geom_jitter(alpha = 0.5, width = 100) +
+  geom_smooth(method = "lm", se = F) +
+  labs(title = "Conservative Language in Presidential Speeches Over Time",
+       x = "Date of Speech", y = "Percent Conservative Language") +
+  theme_minimal()
+
+con_time
 ```
+
+```{r}
+
+lm(populism_percent ~ date, data = sentiment_speeches) %>% 
+  tidy(conf.int = T)
+
+
+```
+
+
+
+
 
 
 
