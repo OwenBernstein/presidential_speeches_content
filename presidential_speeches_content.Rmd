@@ -421,10 +421,6 @@ party_populism_hist <- sentiment_speeches %>%
        y = "Number of Speeches") +
   theme_minimal()
 
-party_populism_hist
-
-ggsave("presidential_speeches/party_pop_hist_plot.png")
-
 
 party_immigration_hist <- sentiment_speeches %>% 
   ggplot(aes(immigration_percent)) +
@@ -435,9 +431,7 @@ party_immigration_hist <- sentiment_speeches %>%
        y = "Number of Speeches") +
   theme_minimal()
 
-party_immigration_hist
 
-ggsave("presidential_speeches/party_img_hist_plot.png")
 
 party_environment_hist <- sentiment_speeches %>% 
   ggplot(aes(environment_percent)) +
@@ -448,9 +442,7 @@ party_environment_hist <- sentiment_speeches %>%
        y = "Number of Speeches") +
   theme_minimal()
 
-party_environment_hist
 
-ggsave("presidential_speeches/party_env_hist_plot.png")
 
 party_progressive_hist <- sentiment_speeches %>% 
   ggplot(aes(progressive_percent)) +
@@ -461,9 +453,7 @@ party_progressive_hist <- sentiment_speeches %>%
        y = "Number of Speeches") +
   theme_minimal()
 
-party_progressive_hist
 
-ggsave("presidential_speeches/party_pro_hist_plot.png")
 
 party_conservatism_hist <- sentiment_speeches %>% 
   ggplot(aes(conservatism_percent)) +
@@ -474,9 +464,7 @@ party_conservatism_hist <- sentiment_speeches %>%
        y = "Number of Speeches") +
   theme_minimal()
 
-party_conservatism_hist
 
-ggsave("presidential_speeches/party_con_hist_plot.png")
 ```
 
 ```{r}
@@ -495,9 +483,6 @@ party_populism_box <- sentiment_speeches %>%
   theme_minimal() +
   theme(axis.line = element_line())
 
-party_populism_box
-
-ggsave("presidential_speeches/party_pop_box_plot.png")
 
 party_immigration__box <- ggplot(sentiment_speeches, aes(party,
                                                          immigration_percent)) +
@@ -508,9 +493,6 @@ party_immigration__box <- ggplot(sentiment_speeches, aes(party,
   theme_minimal() +
   theme(axis.line = element_line())
 
-party_immigration__box
-
-ggsave("presidential_speeches/party_img_box_plot.png")
 
 party_environment_box <- ggplot(sentiment_speeches,
                           aes(party, environment_percent)) +
@@ -520,9 +502,6 @@ party_environment_box <- ggplot(sentiment_speeches,
   theme_minimal() +
   theme(axis.line = element_line())
 
-party_environment_box
-
-ggsave("presidential_speeches/party_env_box_plot.png")
 
 party_progressive_box <- ggplot(sentiment_speeches,
                           aes(party, progressive_percent)) +
@@ -532,9 +511,6 @@ party_progressive_box <- ggplot(sentiment_speeches,
   theme_minimal() +
   theme(axis.line = element_line())
 
-party_progressive_box
-
-ggsave("presidential_speeches/party_pro_box_plot.png")
 
 party_conservatism_box <- ggplot(sentiment_speeches,
                            aes(party, conservatism_percent)) +
@@ -544,9 +520,6 @@ party_conservatism_box <- ggplot(sentiment_speeches,
   theme_minimal() +
   theme(axis.line = element_line())
 
-party_conservatism_box 
-
-ggsave("presidential_speeches/party_con_box_plot.png")
 ```
 
 ```{r}
@@ -562,6 +535,7 @@ pop_time <- ggplot(sentiment_speeches, aes(date, populism_percent)) +
 
 populism_time
 
+ggsave("presidential_speeches/pop_time_plot.png")
 
 img_time <- ggplot(sentiment_speeches, aes(date, immigration_percent)) +
   geom_jitter(alpha = 0.5, width = 100) +
@@ -572,6 +546,8 @@ img_time <- ggplot(sentiment_speeches, aes(date, immigration_percent)) +
 
 img_time
 
+ggsave("presidential_speeches/img_time_plot.png")
+
 env_time <- ggplot(sentiment_speeches, aes(date, environment_percent)) +
   geom_jitter(alpha = 0.5, width = 100) +
   geom_smooth(method = "lm", se = F) +
@@ -580,6 +556,8 @@ env_time <- ggplot(sentiment_speeches, aes(date, environment_percent)) +
   theme_minimal()
 
 env_time
+
+ggsave("presidential_speeches/env_time_plot.png")
 
 pro_time <- ggplot(sentiment_speeches, aes(date, progressive_percent)) +
   geom_jitter(alpha = 0.5, width = 100) +
@@ -590,6 +568,8 @@ pro_time <- ggplot(sentiment_speeches, aes(date, progressive_percent)) +
 
 pro_time
 
+ggsave("presidential_speeches/pro_time_plot.png")
+
 con_time <- ggplot(sentiment_speeches, aes(date, conservatism_percent)) +
   geom_jitter(alpha = 0.5, width = 100) +
   geom_smooth(method = "lm", se = F) +
@@ -598,16 +578,9 @@ con_time <- ggplot(sentiment_speeches, aes(date, conservatism_percent)) +
   theme_minimal()
 
 con_time
+
+ggsave("presidential_speeches/con_time_plot.png")
 ```
-
-```{r}
-
-lm(populism_percent ~ date, data = sentiment_speeches) %>% 
-  tidy(conf.int = T)
-
-
-```
-
 
 
 

@@ -12,6 +12,8 @@ library(rsconnect)
 library(tidyverse)
 
 
+
+
 # Define UI for application that draws a histogram
 ui <- navbarPage(theme = shinytheme("cerulean"),
     "Content Analysis of Presidential Speeches",
@@ -156,7 +158,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                                             "Conservatism")), 
                     plotOutput("boxPlot")),
              column(4,
-                    h3("Linear Regression Plot Analysis"),
+                    h3("Linear Regression Analysis"),
                     p("The linear regression plots allow us to view the point
                       estimate as well as a 95% confidence interval for a
                       regression of candidate on each content category. These
@@ -177,6 +179,31 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                                             "Progressivism",
                                             "Conservatism")),
                     plotOutput("regPlot"))),
+    tabPanel("By Time",
+             column(4,
+                    h3("Line Plot Analysis"),
+                    p("analysis")),
+             column(7,
+                    selectInput("timeLine",
+                                "Select a Content Category", 
+                                choices = c("Populism", 
+                                            "Immigration", 
+                                            "Environment", 
+                                            "Progressivism",
+                                            "Conservatism")),
+                    plotOutput("timeLinePlot")),
+             column(4,
+                    h3("Linear Regression Analysis"),
+                    p("Analysis")),
+             column(7,
+                    selectInput("timeReg",
+                                "Select a Content Category", 
+                                choices = c("Populism", 
+                                            "Immigration", 
+                                            "Environment", 
+                                            "Progressivism",
+                                            "Conservatism")),
+                    gt_output("timeRegPlot"))),
     tabPanel("Method",
              column(10,
              h1("Methodology"),
@@ -333,9 +360,97 @@ server <- function(input, output) {
         }
     }, deleteFile = FALSE)
     
+    output$timeLinePlot <- renderImage({
+        if(input$timeLine == "Populism"){
+            filename <- normalizePath(file.path("pop_time_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 750,
+                 alt = 'plot')}
+        else if(input$timeLine == "Immigration") {
+            filename <- normalizePath(file.path("img_time_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 750,
+                 alt = 'plot')  
+        }
+        else if(input$timeLine == "Environment") {
+            filename <- normalizePath(file.path("env_time_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 750,
+                 alt = 'plot')  
+        }
+        else if(input$timeLine == "Progressivism") {
+            filename <- normalizePath(file.path("pro_time_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 750,
+                 alt = 'plot')  
+        }
+        else if(input$timeLine == "Conservatism") {
+            filename <- normalizePath(file.path("con_time_plot.png"))
+            list(src = filename,
+                 height = 400,
+                 width = 750,
+                 alt = 'plot')  
+        }
+    }, deleteFile = FALSE)
+    
+    
+    
+    output$timeRegPlot <- render_gt({
+        if(input$timeReg == "Populism"){
+            expr <- lm(populism_percent ~ date, data = sentiment_speeches) %>% 
+                tidy(conf.int = T) %>% 
+                select(term, estimate, conf.low, conf.high) %>% 
+                gt() %>% 
+                tab_spanner(label = "Confidence Interval", columns = c("conf.low", "conf.high")) %>% 
+                tab_header("Linear Regression of Date of Speech on Percent Populist Language") %>% 
+                cols_label(term = "Term", estimate = "Estimate", conf.low = "Lower Bound",
+                           conf.high = "Upper Bound")}
+        else if(input$timeReg == "Immigration"){
+            expr <- lm(immigration_percent ~ date, data = sentiment_speeches) %>% 
+                tidy(conf.int = T) %>% 
+                select(term, estimate, conf.low, conf.high) %>% 
+                gt() %>% 
+                tab_spanner(label = "Confidence Interval", columns = c("conf.low", "conf.high")) %>% 
+                tab_header("Linear Regression of Date of Speech on Percent Language Relating to Immigration") %>% 
+                cols_label(term = "Term", estimate = "Estimate", conf.low = "Lower Bound",
+                           conf.high = "Upper Bound")}
+        else if(input$timeReg == "Environment"){
+            expr <- lm(environment_percent ~ date, data = sentiment_speeches) %>% 
+                tidy(conf.int = T) %>% 
+                select(term, estimate, conf.low, conf.high) %>% 
+                gt() %>% 
+                tab_spanner(label = "Confidence Interval", columns = c("conf.low", "conf.high")) %>% 
+                tab_header("Linear Regression of Date of Speech on Percent Language Relating to the Environment") %>% 
+                cols_label(term = "Term", estimate = "Estimate", conf.low = "Lower Bound",
+                           conf.high = "Upper Bound")}
+        else if(input$timeReg == "Progressivism"){
+            expr <- lm(progressive_percent ~ date, data = sentiment_speeches) %>% 
+                tidy(conf.int = T) %>% 
+                select(term, estimate, conf.low, conf.high) %>% 
+                gt() %>% 
+                tab_spanner(label = "Confidence Interval", columns = c("conf.low", "conf.high")) %>% 
+                tab_header("Linear Regression of Date of Speech on Percent Progressive Language") %>% 
+                cols_label(term = "Term", estimate = "Estimate", conf.low = "Lower Bound",
+                           conf.high = "Upper Bound")}
+        else if(input$timeReg == "Conservatism"){
+            expr <- lm(conservatism_percent ~ date, data = sentiment_speeches) %>% 
+                tidy(conf.int = T) %>% 
+                select(term, estimate, conf.low, conf.high) %>% 
+                gt() %>% 
+                tab_spanner(label = "Confidence Interval", columns = c("conf.low", "conf.high")) %>% 
+                tab_header("Linear Regression of Date of Speech on Percent Conservative Language") %>% 
+                cols_label(term = "Term", estimate = "Estimate", conf.low = "Lower Bound",
+                           conf.high = "Upper Bound")}},
+        height = 400,
+        width = 750)
+    
     output$dictionary <- render_gt(
         expr <- tibble(content_category = c("Populism", "Environment", "Immigration",
-                                            "Porgressivism", "Conservatism"),
+                                            "Progressivism", "Conservatism"),
                        dictionary = c("*deceit*, *treason*, *betray*, *absurd*, *arrogant*, *promise*, *corrupt*, *direct*, *elite*, *establishment*, *ruling*, *caste*, *class*, *mafia*, *freedom of expression*, *undemocratic*, *politic*, *propoganda*, *referend*, *regime*, *admit*, *shame*, *tradition*, *people*", "*green*, *climate, *environment*, *heating*, *durable*", "*asylum*, *halal*, *scarf*, *illegal*, *immigra*, *Islam*, *Koran*, *Muslim*, *foreign*", "*progress*, *right*, *freedom*, *self-disposition*, *handicap*, *poverty*, *protection*, *honest*, *equal*, *education*, *pension*, *social*, *weak*", "*belief*, *famil*, *church*, *norm*, *porn*, *sex*, *values*, *conservative*, *custom*")) %>%
             gt() %>% 
             tab_header(title = "Dictionary for Content Analysis") %>% 
