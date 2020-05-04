@@ -146,6 +146,8 @@ sentiment_speeches <- populism %>%
                           speaker == "John McCain", "Republican", "Democrat"),
          date = mdy(date)) %>%
   distinct()
+
+save(sentiment_speeches, file = "presidential_speeches/sentiment_speeches.Rdata")
 ```
 
 ```{r bar charts, include = FALSE}
