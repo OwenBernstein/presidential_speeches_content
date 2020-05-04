@@ -49,7 +49,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              political party talks about the environment more frequently."),
              h2("About the Data"),
              p("To help answer my research question I used the campaign speeches of
-               presidential candidates from the 2004 election to the 2016
+               presidential candidates from the 2008 election to the 2016
                election. The transcripts of these speeches are publicly
                available. One resource which was incredibly helpful in
                collecting these speeches was the University of California, Santa
@@ -119,8 +119,9 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              column(4,
                     h3("Histogram Analysis"),
                     p("These histograms display the distribution of language
-                      within each candidate’s speeches. Barack Obama, during his
-                      2008 campaign, gave significantly more speeches than any
+                      within each candidate’s speeches. Barack Obama
+                      participated in two elections during this time period
+                      and therefore gave significantly more speeches than any
                       other candidate gave during their respective campaigns
                       which somewhat skews the scale of the y axis. However,
                       each histogram still displays interesting information
@@ -167,9 +168,9 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                       allow us to statistically compare the expected amount of a
                       certain category of language between candidates. For
                       example, a Bernie Sanders speech is expected to use about
-                      1.9% more populist language than a Barack Obama speech and
-                      we are 95% confident that this value is between about 1.5%
-                      and 2.3%.")),
+                      2.1% more populist language than a Barack Obama speech and
+                      we are 95% confident that this value is between about 1.7%
+                      and 2.5%.")),
              column(7,
                     selectInput("reg", 
                                 "Select a Content Category", 
@@ -249,8 +250,8 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              p("After removing the words not said by the candidate, I counted
              the number of words in each speech. I then counted the number of
              words relating to each content category. The dictionary of words
-             I selected was modeled directly from Teun Pauwels dictionary and
-             is displayed below. Pauwels study was primarily focused on
+             I selected was modeled directly from Teun Pauwels' dictionary and
+             is displayed below. Pauwels' study was primarily focused on
              populist ideologies and Flemish Nationalism and therefore the
              dictionaries for immigration, environment, progressivism, and
              conservatism are considerably less reliable and flushed out than
@@ -266,12 +267,29 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
              literature suggests hand coding each observation of a word as
              either positive or negative. This method is very labor intensive
              and would limit the number of speeches that could be included in
-             the study. Furthermore, this method was not used in the Pauwel
+             the study. Furthermore, this method was not used in the Pauwels
              study that I used as inspiration and I therefore did not follow
              this suggestion. After counting words based on content category,
              I turned the count into a percentage of total words in the speech
              and used this percentage for analysis."),
-             gt_output("dictionary"))))
+             gt_output("dictionary"),
+             h1("Works Cited"),
+             p("Pauwels, Teun. \"Measuring Populism: A Quantitative Text
+             Analysis of Party Literature in Belgium.\" Journal of Elections,
+             Public Opinion and Parties 21, no. 1 (2011): 97-119."),
+             p("Ribera Payá, Pablo. (2018). Measuring Populism in Spain:
+             content and discourse analysis of Spanish Political Parties.
+             Journal of Contemporary European Studies. 27. 1-33.
+             10.1080/14782804.2018.1536603."),
+             p("Popping, Roel. “Measuring populist discourse using semantic
+             text analysis: a comment.” Quality & quantity vol. 52,5 (2018):
+             2163-2172. doi:10.1007/s11135-017-0651-z"),
+             p("Laver, Michael, Benoit, Kenneth & Garry, John (2003)
+             Extracting policy positions from political texts using words
+             as data. American Political Science Review, 97(2), pp. 311–331."),
+             p("Laver, Michael & Garry, John (2000) Estimating policy positions
+             from political texts. American Journal of Political Science, 44(3),
+             pp. 619–634."))))
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -520,7 +538,7 @@ server <- function(input, output) {
             tab_header(title = "Dictionary for Content Analysis") %>% 
             cols_label(content_category = "Content Category",
                        dictionary = "Words"),
-        height = 600,
+        height = 400,
         width = 750)
     
 }

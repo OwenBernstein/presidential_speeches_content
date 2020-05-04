@@ -590,3 +590,4 @@ ggsave("presidential_speeches/con_time_plot.png")
 
 
 
+
